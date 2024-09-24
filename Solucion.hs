@@ -1,3 +1,4 @@
+-- Los del codigo: Leandro Flores leannicolasflores@gmail.com 37277904, 
 module Solucion where
 
 type Ciudad = String
@@ -8,7 +9,21 @@ type AgenciaDeViajes = [Vuelo]
 
 -- EJERCICIO 1
 vuelosValidos :: AgenciaDeViajes -> Bool
-vuelosValidos _ = True -- Borrar y escribir el código correcto
+vuelosValidos [] = True
+vuelosValidos (v:vuelos)
+    | vueloValido v && not (origenDestinoRepetido v vuelos) = vuelosValidos vuelos
+    | otherwise = False
+    where
+        origenDestinoRepetido :: Vuelo -> AgenciaDeViajes -> Bool
+        origenDestinoRepetido _ [] = False
+        origenDestinoRepetido (origen1, destino1, duracion1) ((origen2, destino2, duracion2):vuelos)
+            | origen1 == origen2 && destino1 == destino2 = True
+            | otherwise = origenDestinoRepetido (origen1, destino1, duracion1) vuelos
+        
+        vueloValido :: Vuelo -> Bool
+        vueloValido (origen, destino, duracion)
+            | duracion > 0 && origen /= destino = True
+            | otherwise = False
 
 -- EJERCICIO 2
 ciudadesConectadas :: AgenciaDeViajes -> Ciudad -> [Ciudad]
