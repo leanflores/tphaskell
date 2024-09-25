@@ -16,7 +16,7 @@ vuelosValidos (v:vuelos)
     where
         origenDestinoRepetido :: Vuelo -> AgenciaDeViajes -> Bool
         origenDestinoRepetido _ [] = False
-        origenDestinoRepetido (origen1, destino1, duracion1) ((origen2, destino2, duracion2):vuelos)
+        origenDestinoRepetido (origen1, destino1, duracion1) ((origen2, destino2, _):vuelos)
             | origen1 == origen2 && destino1 == destino2 = True
             | otherwise = origenDestinoRepetido (origen1, destino1, duracion1) vuelos
         
@@ -28,6 +28,7 @@ vuelosValidos (v:vuelos)
 -- EJERCICIO 2
 ciudadesConectadas :: AgenciaDeViajes -> Ciudad -> [Ciudad]
 ciudadesConectadas _ _ = ["BsAs"] -- Borrar y escribir el código correcto
+
 
 -- EJERCICIO 3
 modernizarFlota :: AgenciaDeViajes -> AgenciaDeViajes
