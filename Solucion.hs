@@ -27,7 +27,7 @@ vuelosValidos (v:vuelos)
 
 -- EJERCICIO 2
 ciudadesConectadas :: AgenciaDeViajes -> Ciudad -> [Ciudad]
-ciudadesConectadas agencia ciudad = auxCiudadesConectadas agencia ciudad []
+ciudadesConectadas agencia ciudad = eliminarCiudadesRepetidas (auxCiudadesConectadas agencia ciudad [])
     where
         auxCiudadesConectadas :: AgenciaDeViajes -> Ciudad -> [Ciudad] -> [Ciudad]
         auxCiudadesConectadas [] _ listaCiudades = listaCiudades
