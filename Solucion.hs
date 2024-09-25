@@ -27,8 +27,19 @@ vuelosValidos (v:vuelos)
 
 -- EJERCICIO 2
 ciudadesConectadas :: AgenciaDeViajes -> Ciudad -> [Ciudad]
-ciudadesConectadas _ _ = ["BsAs"] -- Borrar y escribir el código correcto
-
+ciudadesConectadas agencia ciudad = auxCiudadesConectadas agencia ciudad []
+    where
+        auxCiudadesConectadas :: AgenciaDeViajes -> Ciudad -> [Ciudad] -> [Ciudad]
+        auxCiudadesConectadas [] _ listaCiudades = listaCiudades
+        auxCiudadesConectadas ((origen, destino,_):agencia) ciudad listaCiudades
+            | origen == ciudad = auxCiudadesConectadas agencia ciudad (destino:listaCiudades)
+            | destino == ciudad = auxCiudadesConectadas agencia ciudad (origen:listaCiudades)
+            | otherwise = auxCiudadesConectadas agencia ciudad (origen:listaCiudades)
+        eliminarCiudadesRepetidas :: [Ciudad] -> [Ciudad]
+        eliminarCiudadesRepetidas [] = []
+        eliminarCiudadesRepetidas (c:ciudades)
+            | elem c ciudades = eliminarCiudadesRepetidas ciudades
+            | otherwise = c : eliminarCiudadesRepetidas ciudades
 
 -- EJERCICIO 3
 modernizarFlota :: AgenciaDeViajes -> AgenciaDeViajes
