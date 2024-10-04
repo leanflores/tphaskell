@@ -19,24 +19,34 @@ allTests = test [
 -- corregir los tests si es necesario con las funciones extras que se encuentran al final del archivo
 
 testsEjvuelosValidos = test [
+    -- Pruebas básicas de validez
     "vuelos válido con un elemento" ~: vuelosValidos [("BsAs", "Rosario", 5.0)] ~?= True,
     "sin vuelos" ~: vuelosValidos [] ~?= True,
+
+    -- Pruebas de un solo vuelo que no son válidos
     "vuelo no válido con igual origen y destino" ~: vuelosValidos [("BsAs", "BsAs", 5.0)] ~?= False,
-    "vuelo no válido con duracion igual a 0" ~: vuelosValidos [("BsAs", "Rosario", 0)] ~?= False,
+    "vuelo no válido con duracion nula" ~: vuelosValidos [("BsAs", "Rosario", 0)] ~?= False,
     "vuelo no válido con duracion negativa" ~: vuelosValidos [("BsAs", "Rosario", (-1))] ~?= False,
-    "vuelos no válidos por repetición" ~: vuelosValidos [("BsAs", "Rosario", 1), ("BsAs", "Rosario", 1)] ~?= False,
-    "vuelos no válidos con distinta duración" ~: vuelosValidos [("BsAs", "Rosario", 1), ("BsAs", "Rosario", 5)] ~?= False,
-    "vuelos válidos con ciudades invertidas" ~: vuelosValidos [("BsAs", "Rosario", 1), ("Rosario", "BsAs", 1)] ~?= True,
-    "vuelos válidos con todo distinto" ~: vuelosValidos [("BsAs", "Rosario", 1), ("Córdoba", "Mendoza", 2)] ~?= True,
-    "un vuelo válido y un vuelo no válido" ~: vuelosValidos [("BsAs", "Rosario", 1), ("Córdoba", "Mendoza", 0)] ~?= False
+
+    -- Pruebas de vuelos con ciudades repetidas
+    "2 vuelos con repeticion" ~: vuelosValidos [("BsAs", "Rosario", 1), ("BsAs", "Rosario", 1)] ~?= False,
+    "2 vuelos con distinta duración" ~: vuelosValidos [("BsAs", "Rosario", 1), ("BsAs", "Rosario", 5)] ~?= False,
+    "2 vuelos válidos con ciudades invertidas" ~: vuelosValidos [("BsAs", "Rosario", 1), ("Rosario", "BsAs", 1)] ~?= True,
+    "3 vuelos válidos con ciudades repetidas entre el primero y ultimo" ~: vuelosValidos [("BsAs", "Rosario", 1), ("Cordoba", "Mendoza", 2), ("BsAs", "Rosario", 2)] ~?= False,
+
+    -- Prueba de combinacion de validos y no validos
+    "2 vuelos válidos con todo distinto" ~: vuelosValidos [("BsAs", "Rosario", 1), ("Cordoba", "Mendoza", 2)] ~?= True,
+    "un vuelo válido y un vuelo no válido" ~: vuelosValidos [("BsAs", "Rosario", 1), ("Cóordoba", "Mendoza", 0)] ~?= False,
+    "3 vuelos válidos todos distintos" ~: vuelosValidos [("BsAs", "Rosario", 1), ("Cordoba", "Mendoza", 2), ("La Plata","Neuquen",6.9)] ~?= True,
+    "3 vuelos, 2 validos y 1 no valido" ~: vuelosValidos [("BsAs","Rosario", 3.0),("La Plata","La Plata",0.0),("Rosario","La Plata",7.8)]~?= False
     ]
 
 testsEjciudadesConectadas = test [
     "ciudad conectada con un elemento" ~: ciudadesConectadas  [("BsAs", "Rosario", 5.0)] "Rosario" ~?= ["BsAs"],
-    "ciudad sin conectar con un elemento" ~: ciudadesConectadas  [("BsAs", "Rosario", 5.0)] "Córdoba" ~?= [],
-    "una ciudad conectada con 2 elementos" ~: ciudadesConectadas  [("BsAs", "Rosario", 5.0), ("Córdoba", "BsAs", 4.0)] "Rosario" ~?= ["BsAs"],
+    "ciudad sin conectar con un elemento" ~: ciudadesConectadas  [("BsAs", "Rosario", 5.0)] "Cordoba" ~?= [],
+    "una ciudad conectada con 2 elementos" ~: ciudadesConectadas  [("BsAs", "Rosario", 5.0), ("Cordoba", "BsAs", 4.0)] "Rosario" ~?= ["BsAs"],
     "ciudad conectada con repetición" ~: ciudadesConectadas  [("BsAs", "Rosario", 5.0), ("Rosario", "BsAs", 4.0)] "Rosario" ~?= ["BsAs"],
-    "2 ciudades conectadas de 2 vuelos" ~: ciudadesConectadas  [("BsAs", "Rosario", 5.0), ("Córdoba", "Rosario", 4.0)] "Rosario" ~?= ["BsAs", "Córdoba"]
+    "2 ciudades conectadas de 2 vuelos" ~: expectPermutacion (ciudadesConectadas  [("BsAs", "Rosario", 5.0), ("Cordoba", "Rosario", 4.0)] "Rosario") ["BsAs", "Cordoba"]
     ]
 
 testsEjmodernizarFlota = test [

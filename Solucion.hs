@@ -21,9 +21,7 @@ vuelosValidos (v:vuelos)
             | otherwise = origenDestinoRepetido (origen1, destino1, duracion1) vuelos
         
         vueloValido :: Vuelo -> Bool
-        vueloValido (origen, destino, duracion)
-            | duracion > 0 && origen /= destino = True
-            | otherwise = False
+        vueloValido (origen, destino, duracion) = duracion > 0 && origen /= destino
 
 -- EJERCICIO 2
 ciudadesConectadas :: AgenciaDeViajes -> Ciudad -> [Ciudad]
