@@ -19,11 +19,24 @@ allTests = test [
 -- corregir los tests si es necesario con las funciones extras que se encuentran al final del archivo
 
 testsEjvuelosValidos = test [
-    "vuelos válido con un elemento" ~: vuelosValidos [("BsAs", "Rosario", 5.0)] ~?= True
+    "vuelos válido con un elemento" ~: vuelosValidos [("BsAs", "Rosario", 5.0)] ~?= True,
+    "sin vuelos" ~: vuelosValidos [] ~?= True,
+    "vuelo no válido con igual origen y destino" ~: vuelosValidos [("BsAs", "BsAs", 5.0)] ~?= False,
+    "vuelo no válido con duracion igual a 0" ~: vuelosValidos [("BsAs", "Rosario", 0)] ~?= False,
+    "vuelo no válido con duracion negativa" ~: vuelosValidos [("BsAs", "Rosario", (-1))] ~?= False,
+    "vuelos no válidos por repetición" ~: vuelosValidos [("BsAs", "Rosario", 1), ("BsAs", "Rosario", 1)] ~?= False,
+    "vuelos no válidos con distinta duración" ~: vuelosValidos [("BsAs", "Rosario", 1), ("BsAs", "Rosario", 5)] ~?= False,
+    "vuelos válidos con ciudades invertidas" ~: vuelosValidos [("BsAs", "Rosario", 1), ("Rosario", "BsAs", 1)] ~?= True,
+    "vuelos válidos con todo distinto" ~: vuelosValidos [("BsAs", "Rosario", 1), ("Córdoba", "Mendoza", 2)] ~?= True,
+    "un vuelo válido y un vuelo no válido" ~: vuelosValidos [("BsAs", "Rosario", 1), ("Córdoba", "Mendoza", 0)] ~?= False
     ]
 
 testsEjciudadesConectadas = test [
-    "ciudad conectada con un elemento" ~: ciudadesConectadas  [("BsAs", "Rosario", 5.0)] "Rosario" ~?= ["BsAs"]
+    "ciudad conectada con un elemento" ~: ciudadesConectadas  [("BsAs", "Rosario", 5.0)] "Rosario" ~?= ["BsAs"],
+    "ciudad sin conectar con un elemento" ~: ciudadesConectadas  [("BsAs", "Rosario", 5.0)] "Córdoba" ~?= [],
+    "una ciudad conectada con 2 elementos" ~: ciudadesConectadas  [("BsAs", "Rosario", 5.0), ("Córdoba", "BsAs", 4.0)] "Rosario" ~?= ["BsAs"],
+    "ciudad conectada con repetición" ~: ciudadesConectadas  [("BsAs", "Rosario", 5.0), ("Rosario", "BsAs", 4.0)] "Rosario" ~?= ["BsAs"],
+    "2 ciudades conectadas de 2 vuelos" ~: ciudadesConectadas  [("BsAs", "Rosario", 5.0), ("Córdoba", "Rosario", 4.0)] "Rosario" ~?= ["BsAs", "Córdoba"]
     ]
 
 testsEjmodernizarFlota = test [

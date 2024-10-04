@@ -34,7 +34,7 @@ ciudadesConectadas agencia ciudad = eliminarCiudadesRepetidas (auxCiudadesConect
         auxCiudadesConectadas ((origen, destino,_):agencia) ciudad listaCiudades
             | origen == ciudad = auxCiudadesConectadas agencia ciudad (destino:listaCiudades)
             | destino == ciudad = auxCiudadesConectadas agencia ciudad (origen:listaCiudades)
-            | otherwise = auxCiudadesConectadas agencia ciudad (origen:listaCiudades)
+            | otherwise = auxCiudadesConectadas agencia ciudad listaCiudades
         eliminarCiudadesRepetidas :: [Ciudad] -> [Ciudad]
         eliminarCiudadesRepetidas [] = []
         eliminarCiudadesRepetidas (c:ciudades)
